@@ -8,6 +8,7 @@
 // are comitted in the stateful bean
 
 // This runs with NetBeans 8, Glassfish 4 and Chrome 
+// The original code is here: http://www.mkyong.com/jsf2/how-to-update-row-in-jsf-datatable/
 
 package com.mkyong.mytypes; // in NetBeans, under MkyongOrderDaoJsf-ejb 
 
