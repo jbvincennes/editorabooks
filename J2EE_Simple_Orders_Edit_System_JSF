@@ -7,6 +7,8 @@
 // Then another user call the veriflist url to confirm that the changes
 // are comitted in the stateful bean
 
+// This runs with NetBeans 8, Glassfish 4 and Chrome 
+
 package com.mkyong.mytypes; // in NetBeans, under MykongOrderDaoJsf-ejb 
 
 import java.math.BigDecimal;
