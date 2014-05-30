@@ -1,4 +1,13 @@
-package com.mkyong.mytypes;
+// The first time the user get the screen, he must click the
+// [Init Array List Orders] button to fill the arraylist
+// in the stateful bean
+
+// Then the same user makes a change in a row with the Edit link
+
+// Then another user call the veriflist url to confirm that the changes
+// are comitted in the stateful bean
+
+package com.mkyong.mytypes; // in NetBeans, under MykongOrderDaoJsf-ejb 
 
 import java.math.BigDecimal;
 
@@ -61,7 +70,7 @@ import java.math.BigDecimal;
 
 // ///////////////////////////////////////////////////////////////
 
-package com.mkyong.dao;
+package com.mkyong.dao;  // in NetBeans, under MykongOrderDaoJsf-ejb 
 
 import javax.ejb.Stateful;
 import javax.ejb.LocalBean;
@@ -95,7 +104,7 @@ public class OrderDao {
 
 // ///////////////////////////////////////////////////////////////
 
-package com.mkyong;
+package com.mkyong;  // in NetBeans, under MykongOrderDaoJsf-war 
  
 import com.mkyong.dao.OrderDao;
 import java.io.Serializable;
@@ -147,6 +156,7 @@ public class OrderBean implements Serializable{
 
 
 // ////////INDEX.XHTML///////////////////////////////////////////////////////
+//  // in NetBeans, under MykongOrderDaoJsf-war \ Web Pages
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -202,6 +212,7 @@ public class OrderBean implements Serializable{
 </html>
 
 // /////////////// VERIFLIST.XHTML////////////////////////////////////////////////
+//  // in NetBeans, under MykongOrderDaoJsf-war \ Web Pages
 
 
 <?xml version="1.0" encoding="UTF-8"?>
