@@ -9,7 +9,7 @@
 
 // This runs with NetBeans 8, Glassfish 4 and Chrome 
 
-package com.mkyong.mytypes; // in NetBeans, under MykongOrderDaoJsf-ejb 
+package com.mkyong.mytypes; // in NetBeans, under MkyongOrderDaoJsf-ejb 
 
 import java.math.BigDecimal;
 
@@ -72,7 +72,7 @@ import java.math.BigDecimal;
 
 // ///////////////////////////////////////////////////////////////
 
-package com.mkyong.dao;  // in NetBeans, under MykongOrderDaoJsf-ejb 
+package com.mkyong.dao;  // in NetBeans, under MkyongOrderDaoJsf-ejb 
 
 import javax.ejb.Stateful;
 import javax.ejb.LocalBean;
@@ -106,8 +106,8 @@ public class OrderDao {
 
 // ///////////////////////////////////////////////////////////////
 
-package com.mkyong;  // in NetBeans, under MykongOrderDaoJsf-war 
- 
+package com.mkyong;  // in NetBeans, under MkyongOrderDaoJsf-war 
+
 import com.mkyong.dao.OrderDao;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -158,7 +158,7 @@ public class OrderBean implements Serializable{
 
 
 // ////////INDEX.XHTML///////////////////////////////////////////////////////
-//  // in NetBeans, under MykongOrderDaoJsf-war \ Web Pages
+//  // in NetBeans, under MkyongOrderDaoJsf-war \ Web Pages
 
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
@@ -214,7 +214,7 @@ public class OrderBean implements Serializable{
 </html>
 
 // /////////////// VERIFLIST.XHTML////////////////////////////////////////////////
-//  // in NetBeans, under MykongOrderDaoJsf-war \ Web Pages
+//  // in NetBeans, under MkyongOrderDaoJsf-war \ Web Pages
 
 
 <?xml version="1.0" encoding="UTF-8"?>
