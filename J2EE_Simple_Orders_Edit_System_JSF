@@ -1,0 +1,274 @@
+// The first time the user get the screen, he must click the
+// [Init Array List Orders] button to fill the arraylist
+// in the stateful bean
+
+// Then the same user makes a change in a row with the Edit link
+
+// Then another user call the veriflist url to confirm that the changes
+// are comitted in the stateful bean
+
+// This runs with NetBeans 8, Glassfish 4 and Chrome 
+// The original code is here: http://www.mkyong.com/jsf2/how-to-update-row-in-jsf-datatable/
+
+package com.mkyong.mytypes; // in NetBeans, under MkyongOrderDaoJsf-ejb 
+
+import java.math.BigDecimal;
+
+ public class Order{
+ 
+   String orderNo;
+   String productName;
+   BigDecimal price;
+   int qty;
+   boolean editable;
+ 
+   public Order(String orderNo, String productName, BigDecimal price, int qty) {
+      this.orderNo = orderNo;
+      this.productName = productName;
+      this.price = price;
+      this.qty = qty;
+   }
+ 
+   public String getOrderNo() {
+      return orderNo;
+   }
+
+   public void setOrderNo(String orderNo) {
+      this.orderNo = orderNo;
+   }
+
+   public String getProductName() {
+      return productName;
+   }
+
+   public void setProductName(String productName) {
+      this.productName = productName;
+   }
+
+   public BigDecimal getPrice() {
+      return price;
+   }
+
+   public void setPrice(BigDecimal price) {
+      this.price = price;
+   }
+
+   public int getQty() {
+      return qty;
+   }
+
+   public void setQty(int qty) {
+      this.qty = qty;
+   }
+
+   public boolean isEditable() {
+      return editable;
+   }
+
+   public void setEditable(boolean editable) {
+      this.editable = editable;
+   }
+}
+
+
+// ///////////////////////////////////////////////////////////////
+
+package com.mkyong.dao;  // in NetBeans, under MkyongOrderDaoJsf-ejb 
+
+import javax.ejb.Stateful;
+import javax.ejb.LocalBean;
+import com.mkyong.mytypes.Order;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+
+@Stateful
+public class OrderDao {
+
+   private static final long serialVersionUID = 1L;  
+      
+   public ArrayList<Order> orderList = new ArrayList<Order>(Arrays.asList(
+      new Order("A0001", "Intel CPU",     new BigDecimal("700.00"), 1),
+      new Order("A0002", "Harddisk 10TB", new BigDecimal("500.00"), 2),
+      new Order("A0003", "Dell Laptop",   new BigDecimal("11600.00"), 8),
+      new Order("A0004", "Samsung LCD",   new BigDecimal("5200.00"), 3),
+      new Order("A0005", "A4Tech Mouse",  new BigDecimal("100.00"), 10)));
+ 
+   public ArrayList<Order> getOrderList() {
+      return orderList;
+   }
+      
+   public void setOrderList( ArrayList<Order> pOrderList ) {
+       orderList = pOrderList;
+   }
+}
+
+// ///////////////////////////////////////////////////////////////
+
+package com.mkyong;  // in NetBeans, under MkyongOrderDaoJsf-war 
+
+import com.mkyong.dao.OrderDao;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import javax.ejb.EJB;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import com.mkyong.mytypes.Order;
+
+ 
+@ManagedBean(name="orderbean")
+@SessionScoped
+public class OrderBean implements Serializable{
+ 
+   private static final long serialVersionUID = 1L;
+   @EJB
+   OrderDao orderDao;
+ 
+   public ArrayList<Order> orderList = new ArrayList<Order>();
+        
+   public void initOrderList() {
+      this.orderList = orderDao.getOrderList();
+   }
+
+   public ArrayList<Order> getOrderList() {
+      //initOrderList(); 
+      return orderList;
+   }
+        
+   public String saveAction() {
+      //get all existing value but set "editable" to false 
+      for (Order order : orderList){
+         order.setEditable(false);
+      }
+      orderDao.setOrderList(orderList);
+      //return to current page
+      return null;
+   }
+ 
+   public String editAction(Order order) {
+      order.setEditable(true);
+      return null;
+   }
+ 
+}
+
+
+// ////////INDEX.XHTML///////////////////////////////////////////////////////
+//  // in NetBeans, under MkyongOrderDaoJsf-war \ Web Pages
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+    </h:head>
+    <h:body>
+ 
+    	<h1>JSF 2 dataTable example</h1>
+    	<h:form>
+    	   <h:dataTable value="#{orderbean.orderList}" var="o">
+ 
+    	     <h:column>
+                <f:facet name="header">Order No</f:facet>
+    		<h:inputText value="#{o.orderNo}" size="10" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.orderNo}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Product Name</f:facet>
+    		<h:inputText value="#{o.productName}" size="20" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.productName}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Price</f:facet>
+    		<h:inputText value="#{o.price}" size="10" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.price}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Quantity</f:facet>
+    		<h:inputText value="#{o.qty}" size="5" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.qty}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Action</f:facet>
+    		<h:commandLink value="Edit" action="#{orderbean.editAction(o)}" 
+                                       rendered="#{not o.editable}" />
+    	     </h:column>
+    	  </h:dataTable>
+ 
+    	  <h:commandButton value="Save Changes" action="#{orderbean.saveAction}" />
+          <h:commandButton value="Init Array List Orders" action="#{orderbean.initOrderList()}" />
+      </h:form>
+    </h:body>	
+</html>
+
+// /////////////// VERIFLIST.XHTML////////////////////////////////////////////////
+//  // in NetBeans, under MkyongOrderDaoJsf-war \ Web Pages
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+    </h:head>
+    <h:body>
+ 
+    	<h1>JSF 2 dataTable check changes</h1>
+    	<h:form>
+    	   <h:dataTable value="#{orderbean.orderList}" var="o">
+ 
+    	     <h:column>
+                <f:facet name="header">Order No</f:facet>
+    		<h:inputText value="#{o.orderNo}" size="10" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.orderNo}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Product Name</f:facet>
+    		<h:inputText value="#{o.productName}" size="20" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.productName}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Price</f:facet>
+    		<h:inputText value="#{o.price}" size="10" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.price}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Quantity</f:facet>
+    		<h:inputText value="#{o.qty}" size="5" rendered="#{o.editable}" />
+    		<h:outputText value="#{o.qty}" rendered="#{not o.editable}" />
+    	     </h:column>
+ 
+    	     <h:column>
+    		<f:facet name="header">Action</f:facet>
+    		<h:commandLink value="Edit" action="#{orderbean.editAction(o)}" 
+                                       rendered="#{not o.editable}" />
+    	     </h:column>
+    	  </h:dataTable>
+ 
+    	  <h:commandButton value="Save Changes" action="#{orderbean.saveAction}" />
+          <h:commandButton value="Init Array List Orders" action="#{orderbean.initOrderList()}" />
+      </h:form>
+    </h:body>	
+</html>
+
+
